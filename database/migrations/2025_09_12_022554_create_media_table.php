@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('media', function (Blueprint $table) {
             $table->id();
-            $table->string('logo_url')->nullable();
-            $table->string('sub_logo_url')->nullable();
+            $table->longText('logo_url')->nullable();
+            $table->longText('sub_logo_url')->nullable();
             $table->timestamps();
         });
     }

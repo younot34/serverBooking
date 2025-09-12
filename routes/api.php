@@ -8,7 +8,8 @@ use App\Http\Controllers\Api\{
     DeviceController,
     MediaController,
     BookingController,
-    AuthController
+    AuthController,
+    UserController
 };
 
 /*
@@ -29,6 +30,11 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
+
+Route::get('/users', [UserController::class, 'index']);
+Route::post('/users', [UserController::class, 'store']);
+Route::delete('/users/{id}', [UserController::class, 'destroy']);
+
 
 Route::apiResource('buildings', BuildingController::class);
 Route::apiResource('spaces', SpaceController::class);
