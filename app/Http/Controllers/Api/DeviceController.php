@@ -1,0 +1,51 @@
+<?php
+
+namespace App\Http\Controllers\Api;
+
+use App\Http\Controllers\Controller;
+use App\Models\Device;
+use Illuminate\Http\Request;
+
+class DeviceController extends Controller
+{
+    public function index()
+    {
+        return response()->json(Device::all());
+    }
+
+    public function store(Request $request)
+    {
+        $data = $request->validate([
+            'device_name' => 'required|string',
+            'room_name' => 'required|string',
+            'location' => 'nullable|string',
+            'install_date' => 'nullable|date',
+            'capacity' => 'nullable|integer',
+            'equipment' => 'nullable|string',
+            'is_on' => 'boolean',
+        ]);
+
+        $device = Device::create($data);
+
+        return response()->json($device, 201);
+    }
+
+    public function show($id)
+    {
+        return response()->json(Device::findOrFail($id));
+    }
+
+    public function update(Request $request, $id)
+    {
+        $device = Device::findOrFail($id);
+        $device->update($request->all());
+
+        return response()->json($device);
+    }
+
+    public function destroy($id)
+    {
+        Device::destroy($id);
+        return response()->json(null, 204);
+    }
+}
