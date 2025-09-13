@@ -48,4 +48,31 @@ class DeviceController extends Controller
         Device::destroy($id);
         return response()->json(null, 204);
     }
+
+    public function registerOrGet(Request $request)
+    {
+        $request->validate([
+            'device_id' => 'required|string',
+            'device_name' => 'required|string',
+        ]);
+
+        // cek apakah device sudah ada
+        $device = Device::where('device_id', $request->device_id)->first();
+
+        if ($device) {
+            return response()->json(['room_name' => $device->room_name]);
+        }
+
+        // kalau belum ada, assign room baru
+        $roomNumber = Device::count() + 1;
+        $roomName = "Room $roomNumber";
+
+        $device = Device::create([
+            'device_id' => $request->device_id,
+            'device_name' => $request->device_name,
+            'room_name' => $roomName,
+        ]);
+
+        return response()->json(['room_name' => $device->room_name]);
+    }
 }

@@ -9,7 +9,8 @@ use App\Http\Controllers\Api\{
     MediaController,
     BookingController,
     AuthController,
-    UserController
+    UserController,
+    HistoryController
 };
 
 /*
@@ -35,9 +36,10 @@ Route::get('/users', [UserController::class, 'index']);
 Route::post('/users', [UserController::class, 'store']);
 Route::delete('/users/{id}', [UserController::class, 'destroy']);
 
-
+Route::get('/history', [HistoryController::class, 'index']);
 Route::apiResource('buildings', BuildingController::class);
 Route::apiResource('spaces', SpaceController::class);
 Route::apiResource('devices', DeviceController::class);
+Route::post('/devices/register', [DeviceController::class, 'registerOrGet']);
 Route::apiResource('media', MediaController::class);
 Route::apiResource('bookings', BookingController::class);
