@@ -52,4 +52,20 @@ class UserController extends Controller
             'message' => '✅ User berhasil dihapus'
         ], 200);
     }
+    public function updatePassword(Request $request, $id)
+    {
+        $validated = $request->validate([
+            'new_password' => 'required|min:6|confirmed',
+        ]);
+
+        $user = User::findOrFail($id);
+
+        $user->update([
+            'password' => Hash::make($validated['new_password']),
+        ]);
+
+        return response()->json([
+            'message' => '✅ Password berhasil diperbarui'
+        ], 200);
+    }
 }

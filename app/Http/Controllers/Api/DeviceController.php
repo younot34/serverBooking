@@ -75,4 +75,16 @@ class DeviceController extends Controller
 
         return response()->json(['room_name' => $device->room_name]);
     }
+
+    public function updateByRoomName(Request $request, $room_name)
+    {
+        $request->validate([
+            'is_on' => 'required|boolean',
+        ]);
+
+        $device = Device::where('room_name', $room_name)->firstOrFail();
+        $device->update(['is_on' => $request->is_on]);
+
+        return response()->json($device);
+    }
 }

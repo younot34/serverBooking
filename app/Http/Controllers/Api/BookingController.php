@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Booking;
+use App\Models\History;
 use Illuminate\Http\Request;
 
 class BookingController extends Controller
@@ -18,15 +19,16 @@ class BookingController extends Controller
         $data = $request->validate([
             'room_name' => 'required|string',
             'date' => 'required|date',
-            'time' => 'required|string',
-            'duration' => 'required|integer',
+            'time' => ['required', 'regex:/^\d{2}:\d{2}(:\d{2})?$/'],
+            'duration' => 'required|string',
             'number_of_people' => 'required|integer',
-            'equipment' => 'nullable|string',
+            'equipment' => 'array',
+            'equipment.*' => 'string',
             'host_name' => 'required|string',
             'meeting_title' => 'required|string',
             'is_scan_enabled' => 'boolean',
             'scan_info' => 'nullable|string',
-            'status' => 'required|string',
+            'status' => 'nullable|string',
             'location' => 'nullable|string',
         ]);
 
@@ -52,5 +54,26 @@ class BookingController extends Controller
     {
         Booking::destroy($id);
         return response()->json(null, 204);
+    }
+
+    public function endBooking($id)
+    {
+        $booking = Booking::findOrFail($id);
+
+        // Pindahkan ke history
+        $historyData = $booking->toArray();
+        History::create($historyData);
+
+        // Hapus dari bookings
+        $booking->delete();
+
+        return response()->json(['message' => 'Booking moved to history'], 200);
+    }
+
+    public function getByRoom($roomName)
+    {
+        $bookings = Booking::where('room_name', $roomName)->get();
+
+        return response()->json($bookings);
     }
 }

@@ -35,11 +35,14 @@ Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanc
 Route::get('/users', [UserController::class, 'index']);
 Route::post('/users', [UserController::class, 'store']);
 Route::delete('/users/{id}', [UserController::class, 'destroy']);
-
+Route::put('/users/{id}/password', [UserController::class, 'updatePassword'])->middleware('auth:sanctum');
 Route::get('/history', [HistoryController::class, 'index']);
 Route::apiResource('buildings', BuildingController::class);
 Route::apiResource('spaces', SpaceController::class);
 Route::apiResource('devices', DeviceController::class);
 Route::post('/devices/register', [DeviceController::class, 'registerOrGet']);
+Route::put('/devices/{room_name}/status', [DeviceController::class, 'updateByRoomName']);
 Route::apiResource('media', MediaController::class);
 Route::apiResource('bookings', BookingController::class);
+Route::post('/bookings/{id}/end', [BookingController::class, 'endBooking']);
+Route::get('bookings/room/{roomName}', [BookingController::class, 'getByRoom']);

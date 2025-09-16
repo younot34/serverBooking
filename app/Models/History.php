@@ -12,21 +12,15 @@ class History extends Model
     protected $table = 'history';
 
     protected $fillable = [
-        'room_name',
-        'date',
-        'time',
-        'duration',
-        'number_of_people',
-        'equipment',
-        'host_name',
-        'meeting_title',
-        'is_scan_enabled',
-        'scan_info',
-        'status',
-        'location',
+        'room_name', 'date', 'time', 'duration',
+        'number_of_people', 'equipment', 'host_name',
+        'meeting_title', 'is_scan_enabled', 'scan_info',
+        'status', 'location'
     ];
 
     protected $casts = [
+        'date' => 'date',
+        'time' => 'string',
         'equipment' => 'array',
         'is_scan_enabled' => 'boolean',
     ];

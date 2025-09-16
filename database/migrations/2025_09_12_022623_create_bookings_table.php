@@ -13,10 +13,9 @@ return new class extends Migration
     {
         Schema::create('bookings', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('space_id')->nullable()->constrained()->onDelete('set null'); // relasi ke space
             $table->string('room_name');
             $table->date('date');
-            $table->string('time');
+            $table->time('time',0);
             $table->string('duration')->nullable();
             $table->integer('number_of_people')->nullable();
             $table->json('equipment')->nullable();

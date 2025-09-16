@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Models;
+use Carbon\Carbon;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -10,7 +11,7 @@ class Booking extends Model
     use HasFactory;
 
     protected $fillable = [
-        'space_id', 'room_name', 'date', 'time', 'duration',
+        'room_name', 'date', 'time', 'duration',
         'number_of_people', 'equipment', 'host_name',
         'meeting_title', 'is_scan_enabled', 'scan_info',
         'status', 'location'
@@ -18,13 +19,15 @@ class Booking extends Model
 
     protected $casts = [
         'date' => 'date',
+        'time' => 'string',
         'equipment' => 'array',
         'is_scan_enabled' => 'boolean',
     ];
 
-    public function space()
+    public function getTimeAttribute($value)
     {
-        return $this->belongsTo(Space::class);
+        if (!$value) return null;
+        return Carbon::parse($value)->format('H:i'); // hanya jam & menit
     }
 }
 
