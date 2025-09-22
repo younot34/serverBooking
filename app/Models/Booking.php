@@ -23,11 +23,5 @@ class Booking extends Model
         'equipment' => 'array',
         'is_scan_enabled' => 'boolean',
     ];
-
-    public function getTimeAttribute($value)
-    {
-        if (!$value) return null;
-        return Carbon::parse($value)->format('H:i'); // hanya jam & menit
-    }
 }
 

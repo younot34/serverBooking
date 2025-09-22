@@ -10,7 +10,8 @@ use App\Http\Controllers\Api\{
     BookingController,
     AuthController,
     UserController,
-    HistoryController
+    HistoryController,
+    PasswordResetController
 };
 
 /*
@@ -31,6 +32,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
+Route::post('/forgot-password', [PasswordResetController::class, 'sendResetLink']);
+Route::post('/reset-password', [PasswordResetController::class, 'reset']);
 
 Route::get('/users', [UserController::class, 'index']);
 Route::post('/users', [UserController::class, 'store']);

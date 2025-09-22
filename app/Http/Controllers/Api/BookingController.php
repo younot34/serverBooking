@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Booking;
 use App\Models\History;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 
 class BookingController extends Controller
 {
@@ -18,8 +19,8 @@ class BookingController extends Controller
     {
         $data = $request->validate([
             'room_name' => 'required|string',
-            'date' => 'required|date',
-            'time' => ['required', 'regex:/^\d{2}:\d{2}(:\d{2})?$/'],
+            'date' => 'required|string',
+            'time' => ['required', 'string'],
             'duration' => 'required|string',
             'number_of_people' => 'required|integer',
             'equipment' => 'array',
@@ -75,5 +76,11 @@ class BookingController extends Controller
         $bookings = Booking::where('room_name', $roomName)->get();
 
         return response()->json($bookings);
+    }
+
+        public function getTimeAttribute($value)
+    {
+        if (!$value) return null;
+        return Carbon::parse($value)->format('H:i');
     }
 }
