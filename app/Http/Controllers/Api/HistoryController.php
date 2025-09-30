@@ -13,8 +13,12 @@ class HistoryController extends Controller
      */
     public function index()
     {
-        return response()->json(History::latest()->get());
+        $histories = History::orderBy('date', 'desc')->get()
+            ->groupBy('room_name');
+
+        return response()->json($histories);
     }
+
 
     /**
      * Store a newly created resource in storage.

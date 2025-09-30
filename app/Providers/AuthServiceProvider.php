@@ -25,6 +25,11 @@ class AuthServiceProvider extends ServiceProvider
         $this->registerPolicies();
 
         ResetPassword::createUrlUsing(function ($user, string $token) {
+            if (request()->expectsJson()) {
+                // Jika request dari API (mobile)
+                return env('FRONTEND_URL')."/reset-password?token={$token}&email={$user->email}";
+            }
+            // Jika dari browser (web)
             return env('FRONTEND_URL')."/reset-password?token={$token}&email={$user->email}";
         });
     }

@@ -8,9 +8,15 @@ use Illuminate\Http\Request;
 
 class DeviceController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        return response()->json(Device::all());
+        $query = Device::query();
+
+        if ($request->has('room_name')) {
+            $query->where('room_name', $request->room_name);
+        }
+
+        return response()->json($query->get());
     }
 
     public function store(Request $request)
